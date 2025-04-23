@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conquista del Corazón Emprendedor</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(#d7f0c2, #ffffff);
+      padding: 2rem;
+      color: #333;
+    }
+    .quiz-container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #4caf50;
+    }
+    .question {
+      margin-bottom: 1rem;
+      font-weight: bold;
+    }
+    .options label {
+      display: block;
+      margin: 0.5rem 0;
+      background: #f1f1f1;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .options label:hover {
+      background: #c8e6c9;
+    }
+    button {
+      display: block;
+      margin: 1rem auto;
+      padding: 0.5rem 1.5rem;
+      background: #4caf50;
+      color: #fff;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 1rem;
+      text-align: center;
+      font-weight: bold;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h1>Conquista del Corazón Emprendedor</h1>
+    <div id="quiz">
+      <!-- Preguntas aparecerán aquí -->
+    </div>
+    <button id="nextBtn" class="hidden">Siguiente</button>
+    <div id="result" class="result"></div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "¿Cuál fue la primera prenda que vendimos juntos?",
+        options: ["Un polo blanco", "Una blusa floreada", "Un pantalón de lino"],
+        correct: 1,
+        explanation: "¡Correcto! Esa blusa floreada fue la primera joyita que vendimos juntos."
+      },
+      {
+        question: "¿Qué sueñas tener en tu negocio?",
+        options: ["Una boutique con aire acondicionado", "Una tienda en línea", "Una cadena de tiendas en la selva"],
+        correct: 2,
+        explanation: "¡Así es! Siempre sueñas en grande, como una reina emprendedora amazónica."
+      },
+      {
+        question: "¿Cuál es mi apodo secreto para ti?",
+        options: ["Mi jaguarita", "Mi tesoro de la selva", "Mi emprendedora estrella"],
+        correct: 0,
+        explanation: "¡Exacto! Mi pequeña jaguarita de corazón fuerte y mirada brillante."
+      }
+    ];
+
+    let currentQuestion = 0;
+    let correctAnswers = 0;
+
+    const quiz = document.getElementById('quiz');
+    const nextBtn = document.getElementById('nextBtn');
+    const resultDiv = document.getElementById('result');
+
+    function loadQuestion() {
+      const q = questions[currentQuestion];
+      quiz.innerHTML = `
+        <div class="question">${q.question}</div>
+        <div class="options">
+          ${q.options.map((opt, i) => `
+            <label><input type="radio" name="option" value="${i}"> ${opt}</label>
+          `).join('')}
+        </div>
+      `;
+      nextBtn.classList.add('hidden');
+      resultDiv.textContent = '';
+      document.querySelectorAll('input[name="option"]').forEach(input => {
+        input.addEventListener('change', () => {
+          const selected = parseInt(input.value);
+          if (selected === q.correct) {
+            resultDiv.textContent = q.explanation;
+            resultDiv.style.color = '#388e3c';
+            correctAnswers++;
+            nextBtn.classList.remove('hidden');
+          } else {
+            resultDiv.textContent = 'Ups, intenta de nuevo.';
+            resultDiv.style.color = '#d32f2f';
+          }
+        });
+      });
+    }
+
+    nextBtn.addEventListener('click', () => {
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        loadQuestion();
+      } else {
+        quiz.innerHTML = '';
+        nextBtn.classList.add('hidden');
+        resultDiv.innerHTML = `🥳 ¡Felicidades, jaguarita!<br> Respondiste correctamente ${correctAnswers} de ${questions.length} preguntas.`;
+        resultDiv.style.color = '#4caf50';
+      }
+    });
+
+    loadQuestion();
+  </script>
+</body>
+</html>
